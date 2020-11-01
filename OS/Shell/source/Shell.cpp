@@ -72,12 +72,8 @@ void Shell::CommandRender(std::string command, int length, std::string _args[]) 
 
 void Shell::processCreate(const std::string &_pid, Priorities _priority) {
     auto *process = new Process(_pid, _priority);
-    if (runningProcess == nullptr) {
-        runningProcess = process;
-    }
-    else {
-        readyQueueInsert(process, _priority);
-    }
+    readyQueueInsert(process, _priority);
+    scheduler();
 }
 
 void Shell::processDelete(std::string _pid) {
@@ -100,5 +96,23 @@ void Shell::processDelete(std::string _pid) {
             res = blockQueue[i]->deleteItem(_pid);
             if (res) return ;
         }
+    }
+}
+
+int Shell::getResourceId(const std::string &_name) {
+    if (_name == "R1") return 0;
+    else if (_name == "R2") return 1;
+    else if (_name == "R3") return 2;
+    else if (_name == "R4") return 3;
+    return -1;
+}
+
+void Shell::requireSource(std::string _name, int _count) {
+    int resourceId = getResourceId(_name);
+    if (countResource[resourceId] >= _count) {
+        countResource[resourceId] -= _count;
+    }
+    else {
+
     }
 }

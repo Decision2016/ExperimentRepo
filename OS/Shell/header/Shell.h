@@ -18,14 +18,16 @@ private:
 
     void processCreate(const std::string &_pid, Priorities _priority);
     void processDelete(std::string _pid);
-    void requireSource(std::string _name, std::string _pid);
+    void requireSource(std::string _name, int _count);
     void releaseSource(std::string _name);
     void listReadyProcess();
     void listBlockProcess();
     void listResource();
     void timeout();
+    void scheduler();
 
     void readyQueueInsert(Process *_process, Priorities _priority);
+    int getResourceId(const std::string &_name);
     Process* getPriorityProcess();
 
     void CommandRender(std::string command, int length, std::string _args[]);
