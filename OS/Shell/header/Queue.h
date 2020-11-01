@@ -6,8 +6,20 @@
 #define SHELL_QUEUE_H
 
 
-class Queue {
+#include "Process.h"
 
+class Queue {
+private:
+    Process *_front;
+
+public:
+    void insert(Process *_process);
+    Process *front();
+    bool deleteItem(std::string _pid);
+    void pop();
+
+    Queue();
+    ~Queue();
 };
 
 

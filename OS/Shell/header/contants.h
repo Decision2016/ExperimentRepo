@@ -6,9 +6,9 @@
 #define SHELL_CONTANTS_H
 
 enum Priorities {
-    SYSTEM,
-    USER,
-    INITIAL
+    SYSTEM = 2,
+    USER = 1,
+    INITIAL = 0
 };
 
 enum Type {
@@ -16,5 +16,14 @@ enum Type {
     READY,
     BLOCK
 };
+
+const std::string CREATE = "cr";
+const std::string DELETE = "de";
+const std::string REQUIRE = "req";
+const std::string RELEASE = "rel";
+const std::string TIMEOUT = "to";
+const std::string LIST = "list";
+
+const int RESOURCE_NUM = 4;
 
 #endif //SHELL_CONTANTS_H

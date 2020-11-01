@@ -20,6 +20,11 @@ private:
     Type type;
     LinkList *children;
     Priorities priority;
+
+public:
+    PCB();
+    ~PCB();
+    std::string getPID()
 };
 
 #endif //SHELL_PCB_H

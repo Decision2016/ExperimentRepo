@@ -5,17 +5,22 @@
 #ifndef SHELL_PROCESS_H
 #define SHELL_PROCESS_H
 
-
+#include <string>
+#include "contants.h"
 #include "PCB.h"
 
 class Process {
 private:
-    PCB* pcb;
+    PCB *pcb;
+    Process *_next;
 
 public:
-    void linkPcb(PCB *_pcb) {
-        pcb = _pcb;
-    }
+    Process();
+    ~Process();
+    Process(const std::string _pid, Priorities _priority);
+    void setNextProcess(Process *_next);
+    Process *getNextProcess();
+    std::string getPID();
 };
 
 

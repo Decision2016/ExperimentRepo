@@ -3,3 +3,7 @@
 //
 
 #include "Process.h"
+
+std::string Process::getPID() {
+    return pcb->getPID();
+}
