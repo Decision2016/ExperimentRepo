@@ -16,15 +16,14 @@ private:
     std::string PID;
     int resource[RESOURCE_NUM] = {0, 0, 0, 0};
     int required[RESOURCE_NUM] = {0, 0, 0, 0};
-    Process *parent, *nextProcess;
+    PCB *parent = nullptr, *nextProcess = nullptr;
     Type type;
-    LinkList *children;
+    LinkList *children = nullptr;
     Priorities priority;
 
 public:
     PCB();
     PCB(const std::string &_pid, Priorities _priority);
-    ~PCB();
     std::string getPID();
     void setStatus(Type _type);
     void setNextProcess(PCB *pcb);
