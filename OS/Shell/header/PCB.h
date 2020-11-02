@@ -6,7 +6,6 @@
 #define SHELL_PCB_H
 
 #include <PCB.h>
-#include <Resource.h>
 #include <string>
 #include <Process.h>
 #include <LinkList.h>
@@ -15,16 +14,20 @@
 class PCB {
 private:
     std::string PID;
-    Resource *res;
-    Process *parent;
+    int resource[RESOURCE_NUM] = {0, 0, 0, 0};
+    Process *parent, *nextProcess;
     Type type;
     LinkList *children;
     Priorities priority;
 
 public:
     PCB();
+    PCB(const std::string &_pid, Priorities _priority);
     ~PCB();
-    std::string getPID()
+    std::string getPID();
+    void setStatus(Type _type);
+    void setNextProcess(PCB *pcb);
+    PCB *getNextProcess();
 };
 
 #endif //SHELL_PCB_H

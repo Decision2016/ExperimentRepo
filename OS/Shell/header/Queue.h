@@ -6,15 +6,15 @@
 #define SHELL_QUEUE_H
 
 
-#include "Process.h"
+#include "PCB.h"
 
 class Queue {
 private:
-    Process *_front;
+    PCB*_front;
 
 public:
-    void insert(Process *_process);
-    Process *front();
+    void insert(PCB *_process);
+    PCB *front();
     bool deleteItem(std::string _pid);
     void pop();
 

@@ -11,8 +11,6 @@ add_library(common SHARED
         source/Shell.cpp
         source/Queue.cpp
         source/PCB.cpp
-        source/Resource.cpp
-        source/Process.cpp
         source/LinkList.cpp
         )
 

@@ -5,12 +5,12 @@
 #include <Queue.h>
 
 Queue::Queue() {
-    Process *nullProcess = new Process();
+    PCB *nullProcess = new PCB();
     _front = nullProcess;
 }
 
-void Queue::insert(Process *_process) {
-    Process *p = _front;
+void Queue::insert(PCB *_process) {
+    PCB *p = _front;
     while (p->getNextProcess() != nullptr) {
         p = p->getNextProcess();
     }
@@ -18,21 +18,21 @@ void Queue::insert(Process *_process) {
 }
 
 void Queue::pop() {
-    Process *p;
+    PCB *p;
     p = _front -> getNextProcess();
     if (p == nullptr) return ;
     _front -> setNextProcess(p -> getNextProcess());
     delete p;
 }
 
-Process* Queue::front() {
-    Process *p;
+PCB* Queue::front() {
+    PCB *p;
     p = _front -> getNextProcess();
     return p;
 }
 
 Queue::~Queue() {
-    Process *p = _front, *q;
+    PCB *p = _front, *q;
     while (p->getNextProcess() != nullptr) {
         q = p;
         p = p -> getNextProcess();
