@@ -23,7 +23,12 @@ const std::string REQUIRE = "req";
 const std::string RELEASE = "rel";
 const std::string TIMEOUT = "to";
 const std::string LIST = "list";
+const std::string LIST_BLOCK = "block";
+const std::string LIST_READY = "ready";
+const std::string LIST_RES = "res";
+const std::string EXIT = "exit";
 
 const int RESOURCE_NUM = 4;
+const int READY_QUEUE_NUM = 3;
 
 #endif //SHELL_CONTANTS_H

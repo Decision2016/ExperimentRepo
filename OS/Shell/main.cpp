@@ -1,6 +1,14 @@
 #include <iostream>
+#include <Shell.h>
+#include <string>
 
 int main() {
-    std::cout << "shell>" << std::endl;
+    Shell shell = Shell();
+    std::string command_line;
+    while (true) {
+        getline(std::cin, command_line);
+        int exit = shell.CommandAnalyze(command_line);
+        if (exit == -1) break;
+    }
     return 0;
 }

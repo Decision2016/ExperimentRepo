@@ -12,6 +12,6 @@ add_library(common SHARED
         source/Queue.cpp
         source/PCB.cpp
         source/LinkList.cpp
-        )
+        source/Utils.cpp header/Utils.h)
 
 target_link_libraries(Shell common)

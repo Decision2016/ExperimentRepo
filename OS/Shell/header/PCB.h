@@ -15,6 +15,7 @@ class PCB {
 private:
     std::string PID;
     int resource[RESOURCE_NUM] = {0, 0, 0, 0};
+    int required[RESOURCE_NUM] = {0, 0, 0, 0};
     Process *parent, *nextProcess;
     Type type;
     LinkList *children;
@@ -27,7 +28,13 @@ public:
     std::string getPID();
     void setStatus(Type _type);
     void setNextProcess(PCB *pcb);
+    int getPriorityId();
     PCB *getNextProcess();
+
+    void requireResource(int _id, int num);
+    void getResource(int _id, int num);
+    void releaseResource(int _id);
+    int getResourceNum(int _id);
 };
 
 #endif //SHELL_PCB_H

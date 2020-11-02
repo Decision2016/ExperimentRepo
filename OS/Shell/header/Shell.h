@@ -7,14 +7,16 @@
 
 #include <string>
 #include <Queue.h>
-#include <Process.h>
+#include <vector>
+#include <sstream>
+#include "Utils.h"
 
 class Shell {
 private:
-    Queue *readySystemQueue, *readyUserQueue, *readyInitQueue;
-    Queue *blockQueue[4];
-    Process *runningProcess;
-    int countResource[4] = {1, 2, 3, 4};
+    Queue *readyQueue[READY_QUEUE_NUM];
+    Queue *blockQueue[RESOURCE_NUM];
+    PCB *runningProcess;
+    int countResource[RESOURCE_NUM] = {1, 2, 3, 4};
 
     void processCreate(const std::string &_pid, Priorities _priority);
     void processDelete(std::string _pid);
@@ -26,16 +28,16 @@ private:
     void timeout();
     void scheduler();
 
-    void readyQueueInsert(Process *_process, Priorities _priority);
-    int getResourceId(const std::string &_name);
-    Process* getPriorityProcess();
+    void releaseProcess(PCB *_process);
+    void readyQueueInsert(PCB *_process, Priorities _priority);
+    static int getResourceId(const std::string &_name);
 
-    void CommandRender(std::string command, int length, std::string _args[]);
+    void CommandRender(std::string command, int length, std::vector<std::string> _args);
 
     static Priorities getPriority(const std::string &_pri);
     static void printError(std::string errMsg);
 public:
-    void CommandAnalyze(std::string command_line);
+    int CommandAnalyze(std::string command_line);
     Shell();
     ~Shell();
 };
