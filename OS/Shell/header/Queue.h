@@ -15,11 +15,11 @@ private:
 public:
     void insert(PCB *_process);
     PCB *front();
-    bool deleteItem(std::string _pid);
+    PCB *deleteItem(std::string _pid);
 
     // return and delete the first process which require <= resourceCount
     // in queue
-    bool searchItem(int _id, int _num);
+    PCB *searchItem(int _id, int _num);
 
     void listQueue();
     void pop();

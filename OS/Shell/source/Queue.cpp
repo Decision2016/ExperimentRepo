@@ -3,6 +3,7 @@
 //
 
 #include <Queue.h>
+#include <iostream>
 
 Queue::Queue() {
     PCB *nullProcess = new PCB();
@@ -39,4 +40,38 @@ Queue::~Queue() {
         delete q;
     }
     delete p;
+}
+
+PCB *Queue::deleteItem(std::string _pid) {
+    PCB *p = _front, *q;
+    while (p -> getNextProcess() -> getPID() != _pid && p -> getNextProcess() != nullptr) {
+        p = p -> getNextProcess();
+    }
+    if (p -> getNextProcess() == nullptr) return nullptr;
+    q = p -> getNextProcess();
+    p -> setNextProcess(q ->  getNextProcess());
+    q -> setNextProcess(nullptr);
+    return q;
+}
+
+PCB* Queue::searchItem(int _id, int _num) {
+    PCB *p = _front, *q;
+    while (p -> getNextProcess() != nullptr) {
+        q = p;
+        p = p -> getNextProcess();
+        if (p -> getResourceNum(_id) >= _num) break;
+    }
+    q -> setNextProcess(p -> getNextProcess());
+    p -> setNextProcess(nullptr);
+    return p;
+}
+
+void Queue::listQueue() {
+    PCB *p = _front -> getNextProcess();
+    if (p != nullptr) std::cout<<p -> getPID();
+    while (p -> getNextProcess() != nullptr) {
+        p = p -> getNextProcess();
+        std::cout<<"-"<<p -> getPID();
+    }
+    std::cout<<std::endl;
 }

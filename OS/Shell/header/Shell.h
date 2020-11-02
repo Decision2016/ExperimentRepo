@@ -28,6 +28,7 @@ private:
     void timeout();
     void scheduler();
 
+    void block2ready(int resId);
     void releaseProcess(PCB *_process);
     void readyQueueInsert(PCB *_process, Priorities _priority);
     static int getResourceId(const std::string &_name);

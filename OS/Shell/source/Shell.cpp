@@ -83,6 +83,7 @@ void Shell::releaseProcess(PCB *_process) {
         if (_process -> getResourceNum(i) > 0) {
             countResource[i] += _process -> getResourceNum(i);
             _process -> releaseResource(i);
+            block2ready(i);
         }
     }
     delete _process;
@@ -95,15 +96,21 @@ void Shell::processDelete(std::string _pid) {
         scheduler();
     }
     else {
-        bool res;
+        PCB *res;
         for (auto &item : readyQueue) {
             res = item ->deleteItem(_pid);
-            if (res) return;;
+            if (res != nullptr) {
+                releaseProcess(res);
+                break;
+            }
         }
 
         for (auto & i : blockQueue) {
             res = i->deleteItem(_pid);
-            if (res) return ;
+            if (res != nullptr) {
+                releaseProcess(res);
+                break;
+            }
         }
     }
 }
@@ -116,6 +123,7 @@ int Shell::getResourceId(const std::string &_name) {
     return -1;
 }
 
+// running process release source
 void Shell::releaseSource(std::string _name) {
     int resourceId = getResourceId(_name);
     if (runningProcess -> getResourceNum(resourceId) == 0) {
@@ -124,6 +132,7 @@ void Shell::releaseSource(std::string _name) {
     }
     countResource[resourceId] += runningProcess -> getResourceNum(resourceId);
     runningProcess -> releaseResource(resourceId);
+    block2ready(resourceId);
 }
 
 void Shell::requireSource(std::string _name, int _count) {
