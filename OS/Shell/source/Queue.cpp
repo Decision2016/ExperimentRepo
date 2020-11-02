@@ -23,7 +23,6 @@ void Queue::pop() {
     p = _front -> getNextProcess();
     if (p == nullptr) return ;
     _front -> setNextProcess(p -> getNextProcess());
-    delete p;
 }
 
 PCB* Queue::front() {
@@ -55,12 +54,13 @@ PCB *Queue::deleteItem(std::string _pid) {
 }
 
 PCB* Queue::searchItem(int _id, int _num) {
-    PCB *p = _front, *q;
-    while (p -> getNextProcess() != nullptr) {
+    PCB *p = _front -> getNextProcess(), *q = _front;
+    while (p != nullptr) {
+        if (p -> getResourceNum(_id) >= _num) break;
         q = p;
         p = p -> getNextProcess();
-        if (p -> getResourceNum(_id) >= _num) break;
     }
+    if (p == nullptr) return nullptr;
     q -> setNextProcess(p -> getNextProcess());
     p -> setNextProcess(nullptr);
     return p;

@@ -4,6 +4,7 @@
 
 #include <Shell.h>
 #include <Utils.h>
+#include <iostream>
 
 Shell::Shell() {
     for (auto &item : readyQueue) item = new Queue();
@@ -76,6 +77,7 @@ void Shell::processCreate(const std::string &_pid, Priorities _priority) {
     auto *process = new PCB(_pid, _priority);
     readyQueueInsert(process, _priority);
     scheduler();
+    std::cout<<"process "<<runningProcess->getPID()<<" is running."<<std::endl;
 }
 
 void Shell::releaseProcess(PCB *_process) {
@@ -152,10 +154,13 @@ void Shell::requireSource(std::string _name, int _count) {
 
 void Shell::timeout() {
     int idx = runningProcess -> getPriorityId();
+    PCB *p = runningProcess;
     runningProcess -> setStatus(Type::READY);
     readyQueue[idx] -> insert(runningProcess);
     runningProcess = nullptr;
     scheduler();
+    std::cout<<"process "<<runningProcess -> getPID()<<" is running. process"<<
+        p -> getPID()<<" is ready"<<std::endl;
 }
 
 void Shell::scheduler() {
@@ -212,4 +217,16 @@ int Shell::CommandAnalyze(std::string command_line) {
     if (command == EXIT) return -1;
     CommandRender(command, length - 1, v_string);
     return 0;
+}
+
+void Shell::block2ready(int resId) {
+    PCB *p = nullptr;
+    p = blockQueue[resId] -> searchItem(resId, countResource[resId]);
+    while (p != nullptr) {
+        int num = p -> getRequireResource(resId);
+        p -> getResource(resId, num);
+        p -> setStatus(Type::READY);
+        readyQueue[p -> getPriorityId()]->insert(p);
+        p = blockQueue[resId] -> searchItem(resId, countResource[resId]);
+    }
 }

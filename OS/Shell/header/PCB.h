@@ -34,6 +34,7 @@ public:
     void getResource(int _id, int num);
     void releaseResource(int _id);
     int getResourceNum(int _id);
+    int getRequireResource(int _id);
 };
 
 #endif //SHELL_PCB_H

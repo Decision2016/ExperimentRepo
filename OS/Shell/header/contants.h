@@ -8,7 +8,8 @@
 enum Priorities {
     SYSTEM = 2,
     USER = 1,
-    INITIAL = 0
+    INITIAL = 0,
+    PRI_ERROR = -1
 };
 
 enum Type {

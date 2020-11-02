@@ -52,3 +52,6 @@ int PCB::getResourceNum(int _id) {
     return resource[_id];
 }
 
+int PCB::getRequireResource(int _id) {
+    return required[_id];
+}
