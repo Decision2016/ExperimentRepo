@@ -134,6 +134,7 @@ void Shell::releaseSource(std::string _name) {
     }
     countResource[resourceId] += runningProcess -> getResourceNum(resourceId);
     runningProcess -> releaseResource(resourceId);
+    printf("release source R%d, wake up process ", resourceId + 1);
     block2ready(resourceId);
 }
 
@@ -142,13 +143,16 @@ void Shell::requireSource(std::string _name, int _count) {
     if (countResource[resourceId] >= _count) {
         countResource[resourceId] -= _count;
         runningProcess->getResource(resourceId, _count);
+        printf("process %s requests %d R%d.\n", runningProcess -> getPID() .c_str(), _count, resourceId);
     }
     else {
+        PCB *p = runningProcess;
         runningProcess -> requireResource(resourceId, _count);
         runningProcess -> setStatus(Type::BLOCK);
         blockQueue[resourceId] -> insert(runningProcess);
         runningProcess = nullptr;
         scheduler();
+        printf("process %s is running. process %s is blocked.\n", runningProcess->getPID().c_str() ,p->getPID().c_str());
     }
 }
 
@@ -170,6 +174,7 @@ void Shell::scheduler() {
             PCB *p = readyQueue[i] -> front();
             readyQueue[i] -> pop();
             p -> setStatus(Type::RUNNING);
+            p -> setNextProcess(nullptr);
             runningProcess = p;
             return ;
         }
@@ -192,7 +197,7 @@ void Shell::listBlockProcess() {
 
 void Shell::listResource() {
     for (int i = 0; i < RESOURCE_NUM; i++) {
-        printf("R%d %d\n", i - 1, countResource[i]);
+        printf("R%d %d\n", i + 1, countResource[i]);
     }
 }
 
@@ -225,7 +230,9 @@ void Shell::block2ready(int resId) {
         int num = p -> getRequireResource(resId);
         p -> getResource(resId, num);
         p -> setStatus(Type::READY);
+        std::cout<<p -> getPID()<<" ";
         readyQueue[p -> getPriorityId()]->insert(p);
         p = blockQueue[resId] -> searchItem(resId, countResource[resId]);
     }
+    std::cout<<std::endl;
 }
