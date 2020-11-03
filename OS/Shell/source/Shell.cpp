@@ -39,6 +39,9 @@ Priorities Shell::getPriority(const std::string &_pri) {
     else if (_pri == std::string("0")) {
         return Priorities::INITIAL;
     }
+    else {
+        return Priorities ::PRI_ERROR;
+    }
 }
 
 void Shell::CommandRender(std::string command, int length, std::vector<std::string> _args) {
@@ -85,9 +88,11 @@ void Shell::releaseProcess(PCB *_process) {
         if (_process -> getResourceNum(i) > 0) {
             countResource[i] += _process -> getResourceNum(i);
             _process -> releaseResource(i);
+            printf("release source R%d, wake up process ", i + 1);
             block2ready(i);
         }
     }
+    printf("process %s was deleted.\n", _process->getPID().c_str());
     delete _process;
 }
 
@@ -163,7 +168,7 @@ void Shell::timeout() {
     readyQueue[idx] -> insert(runningProcess);
     runningProcess = nullptr;
     scheduler();
-    std::cout<<"process "<<runningProcess -> getPID()<<" is running. process"<<
+    std::cout<<"process "<<runningProcess -> getPID()<<" is running. process "<<
         p -> getPID()<<" is ready"<<std::endl;
 }
 

@@ -43,7 +43,7 @@ Queue::~Queue() {
 
 PCB *Queue::deleteItem(std::string _pid) {
     PCB *p = _front, *q;
-    while (p -> getNextProcess() -> getPID() != _pid && p -> getNextProcess() != nullptr) {
+    while (p -> getNextProcess() != nullptr && p -> getNextProcess() -> getPID() != _pid) {
         p = p -> getNextProcess();
     }
     if (p -> getNextProcess() == nullptr) return nullptr;
@@ -56,7 +56,7 @@ PCB *Queue::deleteItem(std::string _pid) {
 PCB* Queue::searchItem(int _id, int _num) {
     PCB *p = _front -> getNextProcess(), *q = _front;
     while (p != nullptr) {
-        if (p -> getResourceNum(_id) >= _num) break;
+        if (p -> getResourceNum(_id) <= _num) break;
         q = p;
         p = p -> getNextProcess();
     }
