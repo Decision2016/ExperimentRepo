@@ -69,9 +69,14 @@ PCB* Queue::searchItem(int _id, int _num) {
 void Queue::listQueue() {
     PCB *p = _front -> getNextProcess();
     if (p != nullptr) std::cout<<p -> getPID();
-    while (p -> getNextProcess() != nullptr) {
-        p = p -> getNextProcess();
+    if (p == nullptr) {
+        std::cout<<std::endl;
+        return ;
+    }
+    p = p -> getNextProcess();
+    while (p != nullptr) {
         std::cout<<"-"<<p -> getPID();
+        p = p -> getNextProcess();
     }
     std::cout<<std::endl;
 }

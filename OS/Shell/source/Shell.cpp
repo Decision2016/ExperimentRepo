@@ -171,15 +171,15 @@ void Shell::scheduler() {
             readyQueue[i] -> pop();
             p -> setStatus(Type::RUNNING);
             runningProcess = p;
+            return ;
         }
     }
 }
 
 void Shell::listReadyProcess() {
-    for (int i = 0; i < READY_QUEUE_NUM; i++) {
+    for (int i = READY_QUEUE_NUM - 1; i >= 0; i--) {
         printf("%d: ", i);
         readyQueue[i] -> listQueue();
-        printf("\n");
     }
 }
 
@@ -187,13 +187,12 @@ void Shell::listBlockProcess() {
     for (int i = 0; i < RESOURCE_NUM; i++) {
         printf("R%d: ", i);
         blockQueue[i] -> listQueue();
-        printf("\n");
     }
 }
 
 void Shell::listResource() {
     for (int i = 0; i < RESOURCE_NUM; i++) {
-        printf("R%d %d\n", i, countResource[i]);
+        printf("R%d %d\n", i - 1, countResource[i]);
     }
 }
 
