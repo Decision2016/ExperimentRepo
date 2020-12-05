@@ -39,11 +39,13 @@ Priorities Shell::getPriority(const std::string &_pri) {
     else if (_pri == std::string("0")) {
         return Priorities::INITIAL;
     }
+    else {
+        return Priorities ::PRI_ERROR;
+    }
 }
 
 void Shell::CommandRender(std::string command, int length, std::vector<std::string> _args) {
     if (command == CREATE) {
-        // todo : printError
         processCreate(_args[0], getPriority(_args[1]));
     }
     else if (command == DELETE) {
@@ -64,11 +66,14 @@ void Shell::CommandRender(std::string command, int length, std::vector<std::stri
         else if (_args[0] == LIST_READY) listReadyProcess();
         else if (_args[0] == LIST_RES) listResource();
         else {
-            // todo : print error
+            printError();
         }
     }
+    else if (command == INIT) {
+        printf("init process is running\n");
+    }
     else {
-        // todo : print error
+        printError();
     }
 
 }
@@ -85,9 +90,11 @@ void Shell::releaseProcess(PCB *_process) {
         if (_process -> getResourceNum(i) > 0) {
             countResource[i] += _process -> getResourceNum(i);
             _process -> releaseResource(i);
+            printf("release source R%d, wake up process ", i + 1);
             block2ready(i);
         }
     }
+    printf("process %s was deleted.\n", _process->getPID().c_str());
     delete _process;
 }
 
@@ -106,7 +113,6 @@ void Shell::processDelete(std::string _pid) {
                 break;
             }
         }
-
         for (auto & i : blockQueue) {
             res = i->deleteItem(_pid);
             if (res != nullptr) {
@@ -129,7 +135,7 @@ int Shell::getResourceId(const std::string &_name) {
 void Shell::releaseSource(std::string _name) {
     int resourceId = getResourceId(_name);
     if (runningProcess -> getResourceNum(resourceId) == 0) {
-        // todo:Print error
+        printError();
         return ;
     }
     countResource[resourceId] += runningProcess -> getResourceNum(resourceId);
@@ -143,7 +149,7 @@ void Shell::requireSource(std::string _name, int _count) {
     if (countResource[resourceId] >= _count) {
         countResource[resourceId] -= _count;
         runningProcess->getResource(resourceId, _count);
-        printf("process %s requests %d R%d.\n", runningProcess -> getPID() .c_str(), _count, resourceId);
+        printf("process %s requests %d R%d.\n", runningProcess -> getPID() .c_str(), _count, resourceId + 1);
     }
     else {
         PCB *p = runningProcess;
@@ -157,14 +163,30 @@ void Shell::requireSource(std::string _name, int _count) {
 }
 
 void Shell::timeout() {
+<<<<<<< HEAD
+    if (checkReadyQueue()) {
+        int idx = runningProcess -> getPriorityId();
+        PCB *p = runningProcess;
+        runningProcess -> setStatus(Type::READY);
+        runningProcess -> setPriority();
+        readyQueue[idx] -> insert(runningProcess);
+        runningProcess = nullptr;
+        scheduler();
+        std::cout<<"process "<<runningProcess -> getPID()<<" is running. process "<<
+                 p -> getPID()<<" is ready"<<std::endl;
+    }
+    else  std::cout<<"process "<<runningProcess -> getPID()<<" is running."<<std::endl;
+
+=======
     int idx = runningProcess -> getPriorityId();
     PCB *p = runningProcess;
     runningProcess -> setStatus(Type::READY);
     readyQueue[idx] -> insert(runningProcess);
     runningProcess = nullptr;
     scheduler();
-    std::cout<<"process "<<runningProcess -> getPID()<<" is running. process"<<
+    std::cout<<"process "<<runningProcess -> getPID()<<" is running. process "<<
         p -> getPID()<<" is ready"<<std::endl;
+>>>>>>> f9faa44e09744d09bf755b073e02e5ee2d177306
 }
 
 void Shell::scheduler() {
@@ -181,10 +203,20 @@ void Shell::scheduler() {
     }
 }
 
+bool Shell::checkReadyQueue() {
+    for (int i = READY_QUEUE_NUM - 1; i > 0; i--) {
+        if (readyQueue[i]->front() != nullptr) return true;
+    }
+    return false;
+}
+
 void Shell::listReadyProcess() {
     for (int i = READY_QUEUE_NUM - 1; i >= 0; i--) {
         printf("%d: ", i);
-        readyQueue[i] -> listQueue();
+        if (i == 0) printf("init\n");
+        else {
+            readyQueue[i] -> listQueue();
+        }
     }
 }
 
@@ -235,4 +267,8 @@ void Shell::block2ready(int resId) {
         p = blockQueue[resId] -> searchItem(resId, countResource[resId]);
     }
     std::cout<<std::endl;
+}
+
+void Shell::printError() {
+    printf("Command error\n");
 }

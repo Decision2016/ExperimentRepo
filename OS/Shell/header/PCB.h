@@ -25,6 +25,7 @@ public:
     PCB();
     PCB(const std::string &_pid, Priorities _priority);
     std::string getPID();
+    void setPriority();
     void setStatus(Type _type);
     void setNextProcess(PCB *pcb);
     int getPriorityId();

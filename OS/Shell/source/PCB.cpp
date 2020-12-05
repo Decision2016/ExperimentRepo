@@ -55,3 +55,8 @@ int PCB::getResourceNum(int _id) {
 int PCB::getRequireResource(int _id) {
     return required[_id];
 }
+
+void PCB::setPriority() {
+    if (priority == Priorities::USER) return ;
+    else priority = Priorities::USER;
+}

@@ -28,6 +28,7 @@ const std::string LIST_BLOCK = "block";
 const std::string LIST_READY = "ready";
 const std::string LIST_RES = "res";
 const std::string EXIT = "exit";
+const std::string INIT = "init";
 
 const int RESOURCE_NUM = 4;
 const int READY_QUEUE_NUM = 3;

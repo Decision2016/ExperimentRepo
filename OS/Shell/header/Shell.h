@@ -31,12 +31,13 @@ private:
     void block2ready(int resId);
     void releaseProcess(PCB *_process);
     void readyQueueInsert(PCB *_process, Priorities _priority);
+    bool checkReadyQueue();
     static int getResourceId(const std::string &_name);
 
     void CommandRender(std::string command, int length, std::vector<std::string> _args);
 
     static Priorities getPriority(const std::string &_pri);
-    static void printError(std::string errMsg);
+    static void printError();
 public:
     int CommandAnalyze(std::string command_line);
     Shell();
