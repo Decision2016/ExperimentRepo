@@ -43,11 +43,7 @@ Queue::~Queue() {
 
 PCB *Queue::deleteItem(std::string _pid) {
     PCB *p = _front, *q;
-<<<<<<< HEAD
     while ( p -> getNextProcess() != nullptr && p -> getNextProcess() -> getPID() != _pid) {
-=======
-    while (p -> getNextProcess() != nullptr && p -> getNextProcess() -> getPID() != _pid) {
->>>>>>> f9faa44e09744d09bf755b073e02e5ee2d177306
         p = p -> getNextProcess();
     }
     if (p -> getNextProcess() == nullptr) return nullptr;
