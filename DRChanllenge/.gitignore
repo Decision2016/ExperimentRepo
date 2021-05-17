@@ -1,0 +1,6 @@
+*.exe
+*.html
+test.cpp
+*.jpg
+*.pyc
+Challenge/shape_predictor_68_face_landmarks.dat
